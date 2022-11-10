@@ -1,72 +1,111 @@
 package net.fachtnaroe.co2_mobileapp_red2;
 
-
 import com.google.appinventor.components.runtime.Button;
-import com.google.appinventor.components.runtime.Clock;
 import com.google.appinventor.components.runtime.Component;
 import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.Form;
 import com.google.appinventor.components.runtime.HandlesEventDispatching;
 import com.google.appinventor.components.runtime.HorizontalArrangement;
-import com.google.appinventor.components.runtime.Image;
-import com.google.appinventor.components.runtime.Label;
-import com.google.appinventor.components.runtime.Notifier;
-import com.google.appinventor.components.runtime.PasswordTextBox;
-import com.google.appinventor.components.runtime.TableArrangement;
-import com.google.appinventor.components.runtime.TextBox;
 import com.google.appinventor.components.runtime.VerticalArrangement;
-import com.google.appinventor.components.runtime.VerticalScrollArrangement;
-import com.google.appinventor.components.runtime.Web;
-import com.google.appinventor.components.runtime.WebViewer;
-import com.google.appinventor.components.runtime.util.TimerInternal;
-
-import java.io.Console;
+import com.google.appinventor.components.runtime.Label;
+import com.google.appinventor.components.runtime.TextBox;
 
 public class MainActivity extends Form implements HandlesEventDispatching {
-
     private
-    HorizontalArrangement HorizontalArrangement1;
-    VerticalArrangement VerticalArrangement1;
-    TextBox usernameBox;
-    PasswordTextBox passwordBox;
-
-    Button goButton;
+    Button Menu;
+    HorizontalArrangement Main;
+    HorizontalArrangement HBlock;
+    VerticalArrangement VBlock1;
+    VerticalArrangement VBlock2;
+    Label Labl;
+    TextBox TextCo2;
+    TextBox TextTemp;
 
     protected void $define() {
+        this.Sizing("Responsive");
 
-        HorizontalArrangement1=new HorizontalArrangement(this);
-        HorizontalArrangement1.WidthPercent(100);
+        Main = new HorizontalArrangement(this);
+        Main.BackgroundColor(COLOR_BLACK);
+        Main.HeightPercent(100);
+        Main.WidthPercent(100);
+        Main.Image("background.png");
+        //
+        HBlock = new HorizontalArrangement(Main);
+        HBlock.HeightPercent(100);
+        HBlock.WidthPercent(15);
+        //
+        VBlock1 = new VerticalArrangement(Main);
+        //
+        HBlock = new HorizontalArrangement(VBlock1);
+        HBlock.HeightPercent(20);
+        //
+        HBlock = new HorizontalArrangement(VBlock1);
+        HBlock.HeightPercent(3);
+        HBlock.WidthPercent(30);
+        HBlock.Image("ForTexts.png");
+        Labl = new Label(HBlock);
+        Labl.Text("        CO2 Levels");
+        Labl.TextAlignment(ALIGNMENT_CENTER);
+        //
+        HBlock = new HorizontalArrangement(VBlock1);
+        HBlock.HeightPercent(2);
+        //
+        TextCo2 = new TextBox(VBlock1);
+        TextCo2.HeightPercent(16);
+        TextCo2.Text("437");
+        TextCo2.TextAlignment(ALIGNMENT_CENTER);
+        TextCo2.FontSize(20);
+        TextCo2.TextColor(COLOR_GREEN);
+        //
+        HBlock = new HorizontalArrangement(VBlock1);
+        HBlock.HeightPercent(2);
+        //
+        Labl = new Label(VBlock1);
+        Labl.HeightPercent(6);
+        Labl.Text("Temperature");
+        Labl.TextAlignment(ALIGNMENT_CENTER);
+        //
+        HBlock = new HorizontalArrangement(VBlock1);
+        HBlock.HeightPercent(2);
+        //
+        TextTemp = new TextBox(VBlock1);
+        TextTemp.HeightPercent(16);
+        TextTemp.Text("24");
+        TextTemp.TextAlignment(ALIGNMENT_CENTER);
+        TextTemp.FontSize(20);
+        TextTemp.TextColor(COLOR_GREEN);
+        //
+        VBlock2 = new VerticalArrangement(Main);
+        //
+        HBlock = new HorizontalArrangement(VBlock2);
+        HBlock.HeightPercent(32);
+        //
+        Labl = new Label(VBlock2);
+        Labl.HeightPercent(8);
+        Labl.Text("PPM");
+        Labl.TextAlignment(ALIGNMENT_CENTER);
+        //
+        HBlock = new HorizontalArrangement(VBlock2);
+        HBlock.HeightPercent(17);
+        //
+        Labl = new Label(VBlock2);
+        Labl.HeightPercent(8);
+        Labl.Text("Degrees Celsius");
+        Labl.TextAlignment(ALIGNMENT_CENTER);
+        //
+        HBlock = new HorizontalArrangement(VBlock2);
+        HBlock.HeightPercent(10);
+        //
+        HBlock = new HorizontalArrangement(Main);
+        HBlock.HeightPercent(100);
+        HBlock.WidthPercent(6);
+        //
+        Menu = new Button(VBlock2);
+        Menu.HeightPercent(14);
+        Menu.WidthPercent(30);
+        Menu.TextColor(COLOR_ORANGE);
+        Menu.Image("cog.png");
 
-        VerticalArrangement1 = new VerticalArrangement(HorizontalArrangement1);
-        usernameBox=new TextBox(VerticalArrangement1);
-        usernameBox.FontSize(14);
-        passwordBox=new PasswordTextBox(VerticalArrangement1);
-        goButton = new Button(HorizontalArrangement1);
-        goButton.Text("Hello");
 
-        EventDispatcher.registerEventForDelegation(this, formName, "BackPressed");
-        EventDispatcher.registerEventForDelegation(this, formName, "Click");
-    }
-
-    public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params) {
-
-        System.err.print("dispatchEvent: " + formName + " [" + component.toString() + "] [" + componentName + "] " + eventName);
-        if (eventName.equals("BackPressed")) {
-            // this would be a great place to do something useful
-
-            return true;
-        }
-        else if (eventName.equals("Click")) {
-            if (component.equals(goButton)) {
-                goButton.Text("Goodbye");
-                System.err.print("You pressed a button");
-                // invert te timer status
-                return true;
-            }
-        }
-        else if (eventName.equals("Timer")) {
-        }
-        // true means event has been handled by us (ie recognised)
-        return false;
     }
 }
