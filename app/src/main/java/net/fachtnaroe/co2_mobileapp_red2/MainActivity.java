@@ -13,7 +13,9 @@ import com.google.appinventor.components.runtime.VerticalArrangement;
 import com.google.appinventor.components.runtime.Label;
 import com.google.appinventor.components.runtime.Web;
 import com.google.appinventor.components.runtime.WebViewer;
+import com.google.appinventor.components.runtime.Clock;
 //
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -30,6 +32,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     Web SpiderWeb;
     TextBox servernameBox, commandBox;
     WebViewer SpiderSea;
+    Clock Tim;
 
     protected void $define() {
         this.Sizing("Responsive");
@@ -41,6 +44,10 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         Main.Image("background.png");
         //
         SpiderWeb = new Web(Main);
+        //
+        Tim = new Clock(Main);
+        Tim.TimerEnabled(false);
+        Tim.TimerAlwaysFires(false);
         //
         servernameBox = new TextBox(Main);
         servernameBox.FontSize(12);
@@ -169,7 +176,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         EventDispatcher.registerEventForDelegation(this, formName, "GotText");
         EventDispatcher.registerEventForDelegation(this, formName, "BackPressed");
         EventDispatcher.registerEventForDelegation(this, formName, "OtherScreenClosed");
-
+        EventDispatcher.registerEventForDelegation(this, formName, "Timer");
 
     }
 
@@ -179,9 +186,11 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         if (eventName.equals("BackPressed")) {
             // this would be a great place to do something useful
             return true;
-        } else if (eventName.equals("Click")) {
+        }
+        else if (eventName.equals("Click")) {
             dbg("Ive been pressed!");
             if (component.equals(Fetch)) {
+                Tim.TimerInterval(8000);
                 SpiderWeb.Url(servernameBox.Text() + commandBox.Text());
                 TextCo2.Text(SpiderWeb.Url());
                 dbg("Sending request");
@@ -190,7 +199,8 @@ public class MainActivity extends Form implements HandlesEventDispatching {
                 dbg("Request sent");
                 return true;
             }
-        } else if (eventName.equals("GotText")) {
+        }
+        else if (eventName.equals("GotText")) {
             dbg("GotText");
             if (component.equals(SpiderWeb)) {
 //                dbg("My web component");
@@ -204,8 +214,32 @@ public class MainActivity extends Form implements HandlesEventDispatching {
                 return true;
             }
         }
+        else if (eventName.equals("Timer")) {
+            if (component.equals(Tim)) {
+                Tim.TimerEnabled(false);
+                SpiderWeb.Get();
+                return true;
+            }
+        }
         return false;
     }
+
+
+ //   void handleNetworkResponse (Component c, String status, String textOfResponse) {
+ //       dbg(("<br><b>" + "some message here" + ":</b> " + textOfResponse + "<br>"));
+  //      if (status.equals("200"))
+  //          try {
+   //             JSONObject parser = new JSONObject(textOfResponse);
+  //              if (parser.getString("Status").equals("OK")) {
+  //                  if (c.equals(SpiderWeb)) {
+//
+ //                   }
+ //               }
+ //           }
+ //           catch(JSONException e){
+ //               dbg("Android JSON exception (" + textOfResponse + ")"); }
+ //       else{ dbg("Status is " + status); }
+//    }
 
     public void handleWebResponse(String status, String textOfResponse) {
         dbg("In function");
@@ -218,6 +252,8 @@ public class MainActivity extends Form implements HandlesEventDispatching {
                 textOfResponse = (String) textOfResponse.subSequence(0, maxHTML);
             }
             textOfResponse = textOfResponse.replace("\n", "<br>");
+            textOfResponse = textOfResponse.replace("{'Status':'OK','device':'KRIS-CO2-62-42','sensor':'CO2','value':'", " ");
+            textOfResponse = textOfResponse.replace("','time':'", " ");
             textOfResponse = textOfResponse.replace("<td>", "&nbsp;<td>");
             textOfResponse = textOfResponse.replace("<tr>", "\n<tr>");
             temp = "<html><pre><code>" + textOfResponse + "</code></pre></html>";
@@ -225,6 +261,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             TextCo2.Text(textOfResponse);
 //            contentBox.Text(status);
             dbg(textOfResponse);
+            Tim.TimerEnabled(true);
             dbg("D");
         } else {
             dbg("C");
