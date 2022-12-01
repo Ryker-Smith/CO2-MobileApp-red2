@@ -14,6 +14,7 @@ import com.google.appinventor.components.runtime.Label;
 import com.google.appinventor.components.runtime.Web;
 import com.google.appinventor.components.runtime.WebViewer;
 import com.google.appinventor.components.runtime.Clock;
+import com.google.appinventor.components.runtime.Component;
 //
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     Button Menu, Fetch;
     HorizontalArrangement Main;
     HorizontalArrangement HBlock;
+    VerticalArrangement VBlock;
     VerticalArrangement VBlock1;
     VerticalArrangement VBlock2;
     Label Labl;
@@ -64,7 +66,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         //
         HBlock = new HorizontalArrangement(Main);
         HBlock.HeightPercent(100);
-        HBlock.WidthPercent(15);
+        HBlock.WidthPercent(12);
         //
         VBlock1 = new VerticalArrangement(Main);
         //
@@ -82,16 +84,16 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         HBlock = new HorizontalArrangement(VBlock1);
         HBlock.HeightPercent(2);
         //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(16);
-        HBlock.WidthPercent(42);
-        HBlock.Image("ForTexts.png");
-        TextCo2 = new Label(HBlock);
-        TextCo2.WidthPercent(44);
+        VBlock = new VerticalArrangement(VBlock1);
+        VBlock.HeightPercent(16);
+        VBlock.WidthPercent(45);
+        VBlock.Image("ForTexts.png");
+        TextCo2 = new Label(VBlock);
+        TextCo2.WidthPercent(39);
         TextCo2.HeightPercent(12);
-        TextCo2.Text(" 8 ");
+        TextCo2.Text("Press the plane to request data!");
         TextCo2.TextAlignment(ALIGNMENT_CENTER);
-        TextCo2.FontSize(15);
+        TextCo2.FontSize(27);
         TextCo2.TextColor(COLOR_GREEN);
         TextCo2.HTMLFormat(true);
         //
@@ -190,9 +192,15 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         else if (eventName.equals("Click")) {
             dbg("Ive been pressed!");
             if (component.equals(Fetch)) {
-                Tim.TimerInterval(8000);
+                Tim.TimerInterval(6000);
+                TextCo2.TextColor(COLOR_ORANGE);
+                TextCo2.FontBold(true);
+
                 SpiderWeb.Url(servernameBox.Text() + commandBox.Text());
                 TextCo2.Text(SpiderWeb.Url());
+                TextCo2.Text("Connecting..");
+                TextCo2.TextColor(COLOR_GREEN);
+                TextCo2.FontBold(false);
                 dbg("Sending request");
                 System.err.print("You pressed the button");
                 SpiderWeb.Get();
@@ -224,22 +232,23 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         return false;
     }
 
-
- //   void handleNetworkResponse (Component c, String status, String textOfResponse) {
- //       dbg(("<br><b>" + "some message here" + ":</b> " + textOfResponse + "<br>"));
-  //      if (status.equals("200"))
-  //          try {
-   //             JSONObject parser = new JSONObject(textOfResponse);
-  //              if (parser.getString("Status").equals("OK")) {
-  //                  if (c.equals(SpiderWeb)) {
-//
- //                   }
- //               }
- //           }
- //           catch(JSONException e){
- //               dbg("Android JSON exception (" + textOfResponse + ")"); }
- //       else{ dbg("Status is " + status); }
-//    }
+    void handleNetworkResponse(Component c, String status, String textOfResponse) {
+        dbg(("<br><b>" + "some message here" + ":</b> " + textOfResponse + "<br>"));
+        if (status.equals("200"))
+            try
+            { JSONObject parser = new JSONObject(textOfResponse);
+                if (parser.getString("Status").equals("OK"))
+                {
+                    if (c.equals(SpiderWeb)) {
+                    }
+                }
+            }
+        catch(JSONException e)
+            {
+                dbg("Android JSON exception (" + textOfResponse + ")"); }
+        else
+        { dbg("Status is " + status); }
+    }
 
     public void handleWebResponse(String status, String textOfResponse) {
         dbg("In function");
@@ -274,6 +283,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         System.err.print("~~~> " + debugMsg + " <~~~\n");
     }
 }
+//scrap yard//
 //    JSONObject parser = new JSONObject(textOfResponse);
 //            if (parser.getInt("link_ID") >= 1) {
 //                    messagesPopUp.ShowMessageDialog("Chat has been initiated; now wait for the response", "Information", "OK");
@@ -287,4 +297,3 @@ public class MainActivity extends Form implements HandlesEventDispatching {
 //                    else {
 //                    messagesPopUp.ShowMessageDialog("Problem connecting with server", "Information", "OK");
 //                    }
-
