@@ -217,7 +217,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
                 String status = params[1].toString();
                 String textOfResponse = (String) params[3];
 //                dbg("Calling function to process response");
-                handleWebResponse(status, textOfResponse);
+                handleWebResponse(component, status, textOfResponse);
 //                dbg("Finished and returned");
                 return true;
             }
@@ -232,51 +232,23 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         return false;
     }
 
-    void handleNetworkResponse(Component c, String status, String textOfResponse) {
-        dbg(("<br><b>" + "some message here" + ":</b> " + textOfResponse + "<br>"));
-        if (status.equals("200"))
-            try
-            { JSONObject parser = new JSONObject(textOfResponse);
-                if (parser.getString("Status").equals("OK"))
-                {
-                    if (c.equals(SpiderWeb)) {
-                    }
-                }
-            }
-        catch(JSONException e)
-            {
-                dbg("Android JSON exception (" + textOfResponse + ")"); }
-        else
-        { dbg("Status is " + status); }
-    }
-
-    public void handleWebResponse(String status, String textOfResponse) {
+    public void handleWebResponse(Component c, String status, String textOfResponse) {
         dbg("In function");
         String temp = new String();
         dbg("A");
-        if (status.equals("200")) {
+        if (status.equals("200")) try {
             dbg("B");
-            int maxHTML = 8192;
-            if (textOfResponse.length() > maxHTML) {
-                textOfResponse = (String) textOfResponse.subSequence(0, maxHTML);
+            JSONObject parser = new JSONObject(textOfResponse);
+            if (parser.getString("Status").equals("OK")) {
+                if (c.equals(SpiderWeb)) {
+                    TextCo2.Text(parser.getString("value"));
+                    Tim.TimerEnabled(true);
+                }
             }
-            textOfResponse = textOfResponse.replace("\n", "<br>");
-            textOfResponse = textOfResponse.replace("{'Status':'OK','device':'KRIS-CO2-62-42','sensor':'CO2','value':'", " ");
-            textOfResponse = textOfResponse.replace("','time':'", " ");
-            textOfResponse = textOfResponse.replace("<td>", "&nbsp;<td>");
-            textOfResponse = textOfResponse.replace("<tr>", "\n<tr>");
-            temp = "<html><pre><code>" + textOfResponse + "</code></pre></html>";
-//            contentViewer.BackgroundColor(Component.COLOR_BLUE);
-            TextCo2.Text(textOfResponse);
-//            contentBox.Text(status);
-            dbg(textOfResponse);
-            Tim.TimerEnabled(true);
-            dbg("D");
-        } else {
-            dbg("C");
-            TextCo2.Text(status);
         }
-        dbg("End of processing function");
+        catch(JSONException e){
+            dbg(textOfResponse);
+        }
     }
 
     public static void dbg(String debugMsg) {
