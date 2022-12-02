@@ -14,7 +14,6 @@ import com.google.appinventor.components.runtime.Label;
 import com.google.appinventor.components.runtime.Web;
 import com.google.appinventor.components.runtime.WebViewer;
 import com.google.appinventor.components.runtime.Clock;
-import com.google.appinventor.components.runtime.Component;
 //
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +30,8 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     Label Labl;
     Label TextCo2;
     Label TextTemp;
-    Web SpiderWeb;
-    TextBox servernameBox, commandBox;
+    Web SpiderWebCo2, SpiderWebTemp;
+    TextBox servernameBox1, servernameBox2;
     WebViewer SpiderSea;
     Clock Tim;
 
@@ -45,24 +44,26 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         Main.WidthPercent(100);
         Main.Image("background.png");
         //
-        SpiderWeb = new Web(Main);
+        SpiderWebCo2 = new Web(Main);
+        SpiderWebTemp = new Web(Main);
         //
         Tim = new Clock(Main);
         Tim.TimerEnabled(false);
         Tim.TimerAlwaysFires(false);
         //
-        servernameBox = new TextBox(Main);
-        servernameBox.FontSize(12);
-        servernameBox.Text("https://fachtnaroe.net/qndco2?");
-        servernameBox.Enabled(true);
-        servernameBox.FontTypeface(Component.TYPEFACE_MONOSPACE);
-        servernameBox.Visible(false);
+        servernameBox1 = new TextBox(Main);
+        servernameBox1.FontSize(12);
+        servernameBox1.Text("https://fachtnaroe.net/qndco2?device=KRIS-CO2-62-42&sensor=CO2");
+        servernameBox1.Enabled(true);
+        servernameBox1.FontTypeface(Component.TYPEFACE_MONOSPACE);
+        servernameBox1.Visible(false);
         //
-        commandBox = new TextBox(Main);
-        commandBox.FontSize(12);
-        commandBox.Text("device=KRIS-CO2-62-42&sensor=CO2");
-        commandBox.FontTypeface(Component.TYPEFACE_MONOSPACE);
-        commandBox.Visible(false);
+        servernameBox2 = new TextBox(Main);
+        servernameBox2.FontSize(12);
+        servernameBox2.Text("https://fachtnaroe.net/qndco2?device=KRIS-CO2-62-42&sensor=CELCIUS");
+        servernameBox2.Enabled(true);
+        servernameBox2.FontTypeface(Component.TYPEFACE_MONOSPACE);
+        servernameBox2.Visible(false);
         //
         HBlock = new HorizontalArrangement(Main);
         HBlock.HeightPercent(100);
@@ -113,13 +114,14 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         //
         HBlock = new HorizontalArrangement(VBlock1);
         HBlock.HeightPercent(16);
-        HBlock.WidthPercent(42);
+        HBlock.WidthPercent(45);
         HBlock.Image("ForTexts.png");
         TextTemp = new Label(HBlock);
-        TextTemp.HeightPercent(16);
-        TextTemp.Text("    24");
+        TextTemp.WidthPercent(39);
+        TextTemp.HeightPercent(12);
+        TextTemp.Text("Press the plane to request data!");
         TextTemp.TextAlignment(ALIGNMENT_CENTER);
-        TextTemp.FontSize(50);
+        TextTemp.FontSize(27);
         TextTemp.TextColor(COLOR_GREEN);
         //
         HBlock = new HorizontalArrangement(VBlock1);
@@ -195,25 +197,43 @@ public class MainActivity extends Form implements HandlesEventDispatching {
                 Tim.TimerInterval(6000);
                 TextCo2.TextColor(COLOR_ORANGE);
                 TextCo2.FontBold(true);
-
-                SpiderWeb.Url(servernameBox.Text() + commandBox.Text());
-                TextCo2.Text(SpiderWeb.Url());
+                TextTemp.TextColor(COLOR_ORANGE);
+                TextTemp.FontBold(true);
+                SpiderWebCo2.Url(servernameBox1.Text());
+                SpiderWebTemp.Url(servernameBox2.Text());
+                TextCo2.Text(SpiderWebCo2.Url());
                 TextCo2.Text("Connecting..");
                 TextCo2.TextColor(COLOR_GREEN);
                 TextCo2.FontBold(false);
+                TextTemp.Text(SpiderWebTemp.Url());
+                TextTemp.Text("Connecting..");
+                TextTemp.TextColor(COLOR_GREEN);
+                TextTemp.FontBold(false);
                 dbg("Sending request");
                 System.err.print("You pressed the button");
-                SpiderWeb.Get();
+                SpiderWebCo2.Get();
+                SpiderWebTemp.Get();
                 dbg("Request sent");
                 return true;
             }
         }
         else if (eventName.equals("GotText")) {
             dbg("GotText");
-            if (component.equals(SpiderWeb)) {
+            if (component.equals(SpiderWebCo2)) {
 //                dbg("My web component");
                 TextCo2.Text("Formatting\n");
-
+                TextCo2.FontSize(50);
+                String status = params[1].toString();
+                String textOfResponse = (String) params[3];
+//                dbg("Calling function to process response");
+                handleWebResponse(component, status, textOfResponse);
+//                dbg("Finished and returned");
+                return true;
+            }
+            else if (component.equals(SpiderWebTemp)) {
+//                dbg("My web component");
+                TextTemp.Text("Formatting\n");
+                TextTemp.FontSize(50);
                 String status = params[1].toString();
                 String textOfResponse = (String) params[3];
 //                dbg("Calling function to process response");
@@ -225,7 +245,8 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         else if (eventName.equals("Timer")) {
             if (component.equals(Tim)) {
                 Tim.TimerEnabled(false);
-                SpiderWeb.Get();
+                SpiderWebCo2.Get();
+                SpiderWebTemp.Get();
                 return true;
             }
         }
@@ -240,9 +261,12 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             dbg("B");
             JSONObject parser = new JSONObject(textOfResponse);
             if (parser.getString("Status").equals("OK")) {
-                if (c.equals(SpiderWeb)) {
+                if (c.equals(SpiderWebCo2)) {
                     TextCo2.Text(parser.getString("value"));
                     Tim.TimerEnabled(true);
+                }
+                else if (c.equals(SpiderWebTemp)) {
+                    TextTemp.Text(parser.getString("value"));
                 }
             }
         }
