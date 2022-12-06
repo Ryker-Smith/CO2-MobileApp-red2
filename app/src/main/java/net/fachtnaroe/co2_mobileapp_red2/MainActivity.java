@@ -128,8 +128,15 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         HBlock.HeightPercent(5);
         //
         Fetch = new Button(VBlock1);
+        /* Using percentages for button/image size is more
+        likely to yield an image out of proportion.
+        Using pixel sizes maintains proportions, does not add to alignment
+        issues, and can be made easier with a variable for square button images.
         Fetch.HeightPercent(14);
-        Fetch.WidthPercent(30);
+        Fetch.WidthPercent(30); */
+        int FetchPngSize=128;
+        Fetch.Width(FetchPngSize);
+        Fetch.Height(FetchPngSize);
         Fetch.TextColor(COLOR_ORANGE);
         Fetch.Image("Fetch.png");
         Fetch.Shape(BUTTON_SHAPE_ROUNDED);
@@ -170,10 +177,14 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         HBlock.WidthPercent(6);
         //
         Menu = new Button(VBlock2);
-        Menu.HeightPercent(14);
-        Menu.WidthPercent(30);
+        /* Menu.HeightPercent(14);
+        Menu.WidthPercent(30); */
+        // keep button sizes the same for better appearance, but with option to change
+        int CogsPngSize=96; // FetchPngSize;
+        Menu.Width(CogsPngSize);
+        Menu.Height(CogsPngSize);
         Menu.TextColor(COLOR_ORANGE);
-        Menu.Image("cog.png");
+        Menu.Image("cog_squaredoff.png");
         Menu.Shape(BUTTON_SHAPE_ROUNDED);
         //
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
