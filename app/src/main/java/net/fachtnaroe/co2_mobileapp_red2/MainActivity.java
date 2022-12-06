@@ -20,10 +20,12 @@ import org.json.JSONObject;
 
 public class MainActivity extends Form implements HandlesEventDispatching {
     private
-    Button Menu, Fetch;
-    HorizontalArrangement Main;
-    HorizontalArrangement HBlock;
-    VerticalArrangement VBlock, VBlock1, VBlock2;
+    Button but_Settings, but_Fetch;
+    HorizontalArrangement   Main, hb_CO2_data, HBlock, pad_HBlock_R2,
+                            pad_HBlock_TopLeft, pad_MarginLeft, hb_CO2_head, pad_HBlock_L1,
+                            pad_HBlock_TopRight, hb_CO2_units, pad_HBlock_R1, hb_Temp_Units,
+                            hb_Temp_Head, hb_Temp_Data, pad_HBlock_L2, pad_HBlock_L3;
+    VerticalArrangement vb_Left, vb_Right;
     Label Labl;
     Label label_CO2_data;
     Label label_Temperature_data;
@@ -40,21 +42,19 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         Main.HeightPercent(100);
         Main.WidthPercent(100);
         Main.Image("background.png");
-        //
+        // non-visible components
         SpiderWebCo2 = new Web(Main);
         SpiderWebTemp = new Web(Main);
-        //
         Tim = new Clock(Main);
         Tim.TimerEnabled(false);
         Tim.TimerAlwaysFires(false);
-        //
+        // hidden (debug) components
         servernameBox1 = new TextBox(Main);
         servernameBox1.FontSize(12);
         servernameBox1.Text("https://fachtnaroe.net/qndco2?device=KRIS-CO2-62-42&sensor=CO2");
         servernameBox1.Enabled(true);
         servernameBox1.FontTypeface(Component.TYPEFACE_MONOSPACE);
         servernameBox1.Visible(false);
-        //
         servernameBox2 = new TextBox(Main);
         servernameBox2.FontSize(12);
         servernameBox2.Text("https://fachtnaroe.net/qndco2?device=KRIS-CO2-62-42&sensor=CELCIUS");
@@ -62,34 +62,38 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         servernameBox2.FontTypeface(Component.TYPEFACE_MONOSPACE);
         servernameBox2.Visible(false);
         //
-        HBlock = new HorizontalArrangement(Main);
-        HBlock.HeightPercent(100);
-        HBlock.WidthPercent(12);
+        pad_MarginLeft = new HorizontalArrangement(Main);
+        pad_MarginLeft.HeightPercent(100);
+        pad_MarginLeft.WidthPercent(12);
         //
-        VBlock1 = new VerticalArrangement(Main);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(20);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(4);
-        HBlock.WidthPercent(30);
-        HBlock.Image("ForTexts.png");
-        Label padding1 = new Label(HBlock);
+        // column LEFT
+        vb_Left = new VerticalArrangement(Main);
+//        vb_Left.BackgroundColor(Component.COLOR_RED);
+        // put padding to move down screen
+        pad_HBlock_TopLeft = new HorizontalArrangement(vb_Left);
+        pad_HBlock_TopLeft.HeightPercent(20);
+        // first heading, image as bg
+        hb_CO2_head = new HorizontalArrangement(vb_Left);
+        hb_CO2_head.HeightPercent(4);
+        hb_CO2_head.WidthPercent(30);
+        hb_CO2_head.Image("ForTexts.png");
+        // pad inwards
+        Label padding1 = new Label(hb_CO2_head);
         padding1.HeightPercent(3);
         padding1.WidthPercent(2);
-        Labl = new Label(HBlock);
+        Labl = new Label(hb_CO2_head);
         Labl.Text("CO2 Level");
         Labl.TextAlignment(ALIGNMENT_CENTER);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
+        // padding to next item (data)
+        HBlock = new HorizontalArrangement(vb_Left);
         HBlock.HeightPercent(2);
-        //
-        VBlock = new VerticalArrangement(VBlock1);
-        VBlock.HeightPercent(16);
-        VBlock.WidthPercent(45);
-        VBlock.Image("ForTexts.png");
-        label_CO2_data = new Label(VBlock);
+        // first DATA (CO2)
+        hb_CO2_data = new HorizontalArrangement(vb_Left);
+        hb_CO2_data.HeightPercent(16);
+        hb_CO2_data.WidthPercent(45);
+        hb_CO2_data.Image("ForTexts.png");
+//        hb_CO2_data.BackgroundColor(Component.COLOR_RED);
+        label_CO2_data = new Label(hb_CO2_data);
         label_CO2_data.WidthPercent(39);
         label_CO2_data.HeightPercent(12);
         label_CO2_data.Text("Press the plane to request data!");
@@ -97,40 +101,40 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         label_CO2_data.FontSize(27);
         label_CO2_data.TextColor(COLOR_GREEN);
         label_CO2_data.HTMLFormat(true);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(2);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(4);
-        HBlock.WidthPercent(30);
-        HBlock.Image("ForTexts.png");
-        Label padding2 = new Label(HBlock);
+        // padding
+        pad_HBlock_L1 = new HorizontalArrangement(vb_Left);
+        pad_HBlock_L1.HeightPercent(2);
+        // heading for temperature
+        hb_Temp_Head = new HorizontalArrangement(vb_Left);
+        hb_Temp_Head.HeightPercent(4);
+        hb_Temp_Head.WidthPercent(30);
+        hb_Temp_Head.Image("ForTexts.png");
+        Label padding2 = new Label(hb_Temp_Head);
         padding2.HeightPercent(3);
         padding2.WidthPercent(2);
-        Labl = new Label(HBlock);
+        Labl = new Label(hb_Temp_Head);
         Labl.Text("Temperature");
         Labl.TextAlignment(ALIGNMENT_CENTER);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(2);
-        //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(16);
-        HBlock.WidthPercent(45);
-        HBlock.Image("ForTexts.png");
-        label_Temperature_data = new Label(HBlock);
+        // padding
+        pad_HBlock_L2 = new HorizontalArrangement(vb_Left);
+        pad_HBlock_L2.HeightPercent(2);
+        // Temperature data
+        hb_Temp_Data = new HorizontalArrangement(vb_Left);
+        hb_Temp_Data.HeightPercent(16);
+        hb_Temp_Data.WidthPercent(45);
+        hb_Temp_Data.Image("ForTexts.png");
+        label_Temperature_data = new Label(hb_Temp_Data);
         label_Temperature_data.WidthPercent(39);
         label_Temperature_data.HeightPercent(12);
         label_Temperature_data.Text("Press the plane to request data!");
         label_Temperature_data.TextAlignment(ALIGNMENT_CENTER);
         label_Temperature_data.FontSize(27);
         label_Temperature_data.TextColor(COLOR_GREEN);
+        // padding
+        pad_HBlock_L3 = new HorizontalArrangement(vb_Left);
+        pad_HBlock_L3.HeightPercent(5);
         //
-        HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(5);
-        //
-        Fetch = new Button(VBlock1);
+        but_Fetch = new Button(vb_Left);
         /* Using percentages for button/image size is more
         likely to yield an image out of proportion.
         Using pixel sizes maintains proportions, does not add to alignment
@@ -138,58 +142,60 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         Fetch.HeightPercent(14);
         Fetch.WidthPercent(30); */
         int FetchPngSize=128;
-        Fetch.Width(FetchPngSize);
-        Fetch.Height(FetchPngSize);
-        Fetch.TextColor(COLOR_ORANGE);
-        Fetch.Image("Fetch.png");
-        Fetch.Shape(BUTTON_SHAPE_ROUNDED);
+        but_Fetch.Width(FetchPngSize);
+        but_Fetch.Height(FetchPngSize);
+        but_Fetch.TextColor(COLOR_ORANGE);
+        but_Fetch.Image("Fetch.png");
+        but_Fetch.Shape(BUTTON_SHAPE_ROUNDED);
+        // RIGHT Column RIGHT RIGHT RIGHT
+        vb_Right = new VerticalArrangement(Main);
+//        vb_Right.BackgroundColor(Component.COLOR_BLUE);
         //
-        VBlock2 = new VerticalArrangement(Main);
+        pad_HBlock_TopRight = new HorizontalArrangement(vb_Right);
+        pad_HBlock_TopRight.HeightPercent(32);
         //
-        HBlock = new HorizontalArrangement(VBlock2);
-        HBlock.HeightPercent(32);
-        //
-        HBlock = new HorizontalArrangement(VBlock2);
-        HBlock.HeightPercent(4);
-        HBlock.WidthPercent(38);
-        HBlock.Image("ForTexts.png");
-        /*Label padding3 = new Label(HBlock);
+        hb_CO2_units = new HorizontalArrangement(vb_Right);
+        hb_CO2_units.HeightPercent(4);
+        hb_CO2_units.WidthPercent(38);
+        hb_CO2_units.Image("ForTexts.png");
+        Label padding3 = new Label(hb_CO2_units);
         padding3.HeightPercent(3);
-        padding3.WidthPercent(3); */
+        padding3.WidthPercent(3);
+        Labl = new Label(hb_CO2_units);
         Labl.Text("PPM");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         Labl.FontSize(18);
         //
-        HBlock = new HorizontalArrangement(VBlock2);
-        HBlock.HeightPercent(17);
+        pad_HBlock_R1 = new HorizontalArrangement(vb_Right);
+        pad_HBlock_R1.HeightPercent(17);
         //
-        HBlock = new HorizontalArrangement(VBlock2);
-        HBlock.HeightPercent(4);
-        HBlock.WidthPercent(38);
-        HBlock.Image("ForTexts.png");
-        Labl = new Label(HBlock);
+        hb_Temp_Units = new HorizontalArrangement(vb_Right);
+        hb_Temp_Units.HeightPercent(4);
+        hb_Temp_Units.WidthPercent(38);
+        hb_Temp_Units.Image("ForTexts.png");
+        Labl = new Label(hb_Temp_Units);
         Labl.HeightPercent(8);
-        Labl.Text("   Degrees Celsius");
+        Labl.Text("\u2103");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         Labl.FontSize(18);
         //
-        HBlock = new HorizontalArrangement(VBlock2);
-        HBlock.HeightPercent(11);
+        pad_HBlock_R2 = new HorizontalArrangement(vb_Right);
+        pad_HBlock_R2.HeightPercent(11);
         //
-        HBlock = new HorizontalArrangement(Main);
-        HBlock.HeightPercent(100);
-        HBlock.WidthPercent(6);
+//        HBlock = new HorizontalArrangement(vb_Right);
+//        HBlock.HeightPercent(100);
+//        HBlock.WidthPercent(6);
         //
-        Menu = new Button(VBlock2);
+        but_Settings = new Button(vb_Right);
         /* Menu.HeightPercent(14);
         Menu.WidthPercent(30); */
         // keep button sizes the same for better appearance, but with option to change
         int CogsPngSize=96; // FetchPngSize;
-        Menu.Width(CogsPngSize);
-        Menu.Height(CogsPngSize);
-        Menu.TextColor(COLOR_ORANGE);
-        Menu.Image("cog_squaredoff.png");
-        Menu.Shape(BUTTON_SHAPE_ROUNDED);
+        but_Settings.Width(CogsPngSize);
+        but_Settings.Height(CogsPngSize);
+        but_Settings.TextColor(COLOR_ORANGE);
+        but_Settings.Image("cog_squaredoff.png");
+        but_Settings.Shape(BUTTON_SHAPE_ROUNDED);
         //
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, formName, "GotText");
@@ -208,7 +214,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         }
         else if (eventName.equals("Click")) {
             dbg("Ive been pressed!");
-            if (component.equals(Fetch)) {
+            if (component.equals(but_Fetch)) {
                 Tim.TimerInterval(6000);
                 label_CO2_data.TextColor(COLOR_ORANGE);
                 label_CO2_data.FontBold(true);
