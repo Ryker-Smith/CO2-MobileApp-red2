@@ -33,6 +33,10 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     TextBox servernameBox1, servernameBox2;
     WebViewer SpiderSea;
     Clock Tim;
+    int pad_MarginLeft_Width=10;
+    int leftHeadingPaddingValue=2;
+    int rightHeadingPaddingValue=2;
+    int rightHeadingPercentValue=36;
 
     protected void $define() {
         this.Sizing("Responsive");
@@ -61,14 +65,13 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         servernameBox2.Enabled(true);
         servernameBox2.FontTypeface(Component.TYPEFACE_MONOSPACE);
         servernameBox2.Visible(false);
-        //
+        // A margin from LHS of screen
         pad_MarginLeft = new HorizontalArrangement(Main);
         pad_MarginLeft.HeightPercent(100);
-        pad_MarginLeft.WidthPercent(12);
+        pad_MarginLeft.WidthPercent(pad_MarginLeft_Width);
         //
         // column LEFT
         vb_Left = new VerticalArrangement(Main);
-//        vb_Left.BackgroundColor(Component.COLOR_RED);
         // put padding to move down screen
         pad_HBlock_TopLeft = new HorizontalArrangement(vb_Left);
         pad_HBlock_TopLeft.HeightPercent(20);
@@ -80,11 +83,11 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         // pad inwards
         Label padding1 = new Label(hb_CO2_head);
         padding1.HeightPercent(3);
-        padding1.WidthPercent(2);
+        padding1.WidthPercent(leftHeadingPaddingValue);
         Labl = new Label(hb_CO2_head);
         Labl.Text("CO2 Level");
         Labl.TextAlignment(ALIGNMENT_CENTER);
-        // padding to next item (data)
+        // vertical padding to next item (data)
         HBlock = new HorizontalArrangement(vb_Left);
         HBlock.HeightPercent(2);
         // first DATA (CO2)
@@ -92,7 +95,6 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         hb_CO2_data.HeightPercent(16);
         hb_CO2_data.WidthPercent(45);
         hb_CO2_data.Image("ForTexts.png");
-//        hb_CO2_data.BackgroundColor(Component.COLOR_RED);
         label_CO2_data = new Label(hb_CO2_data);
         label_CO2_data.WidthPercent(39);
         label_CO2_data.HeightPercent(12);
@@ -101,7 +103,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         label_CO2_data.FontSize(27);
         label_CO2_data.TextColor(COLOR_GREEN);
         label_CO2_data.HTMLFormat(true);
-        // padding
+        // padding to next
         pad_HBlock_L1 = new HorizontalArrangement(vb_Left);
         pad_HBlock_L1.HeightPercent(2);
         // heading for temperature
@@ -111,11 +113,11 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         hb_Temp_Head.Image("ForTexts.png");
         Label padding2 = new Label(hb_Temp_Head);
         padding2.HeightPercent(3);
-        padding2.WidthPercent(2);
+        padding2.WidthPercent(leftHeadingPaddingValue);
         Labl = new Label(hb_Temp_Head);
         Labl.Text("Temperature");
         Labl.TextAlignment(ALIGNMENT_CENTER);
-        // padding
+        // vertical padding to next
         pad_HBlock_L2 = new HorizontalArrangement(vb_Left);
         pad_HBlock_L2.HeightPercent(2);
         // Temperature data
@@ -133,7 +135,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         // padding
         pad_HBlock_L3 = new HorizontalArrangement(vb_Left);
         pad_HBlock_L3.HeightPercent(5);
-        //
+        // the do-things-now button:
         but_Fetch = new Button(vb_Left);
         /* Using percentages for button/image size is more
         likely to yield an image out of proportion.
@@ -147,48 +149,46 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         but_Fetch.TextColor(COLOR_ORANGE);
         but_Fetch.Image("Fetch.png");
         but_Fetch.Shape(BUTTON_SHAPE_ROUNDED);
+        //
         // RIGHT Column RIGHT RIGHT RIGHT
         vb_Right = new VerticalArrangement(Main);
-//        vb_Right.BackgroundColor(Component.COLOR_BLUE);
-        //
+        //  padding at top of RIGHT
         pad_HBlock_TopRight = new HorizontalArrangement(vb_Right);
         pad_HBlock_TopRight.HeightPercent(32);
         //
         hb_CO2_units = new HorizontalArrangement(vb_Right);
         hb_CO2_units.HeightPercent(4);
-        hb_CO2_units.WidthPercent(38);
+        hb_CO2_units.WidthPercent(rightHeadingPercentValue);
         hb_CO2_units.Image("ForTexts.png");
         Label padding3 = new Label(hb_CO2_units);
         padding3.HeightPercent(3);
-        padding3.WidthPercent(3);
+        padding3.WidthPercent(rightHeadingPaddingValue);
         Labl = new Label(hb_CO2_units);
         Labl.Text("PPM");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         Labl.FontSize(18);
-        //
+        // padding to next
         pad_HBlock_R1 = new HorizontalArrangement(vb_Right);
         pad_HBlock_R1.HeightPercent(17);
         //
         hb_Temp_Units = new HorizontalArrangement(vb_Right);
         hb_Temp_Units.HeightPercent(4);
-        hb_Temp_Units.WidthPercent(38);
+        hb_Temp_Units.WidthPercent(rightHeadingPercentValue);
         hb_Temp_Units.Image("ForTexts.png");
+        Label padding4 = new Label(hb_Temp_Units);
+        padding4.HeightPercent(3);
+        padding4.WidthPercent(rightHeadingPaddingValue);
         Labl = new Label(hb_Temp_Units);
         Labl.HeightPercent(8);
+        // use unicodes for degrees symbol
         Labl.Text("\u2103");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         Labl.FontSize(18);
-        //
+        //  vertical padding to next
         pad_HBlock_R2 = new HorizontalArrangement(vb_Right);
         pad_HBlock_R2.HeightPercent(11);
-        //
-//        HBlock = new HorizontalArrangement(vb_Right);
-//        HBlock.HeightPercent(100);
-//        HBlock.WidthPercent(6);
-        //
+        // settings button
         but_Settings = new Button(vb_Right);
-        /* Menu.HeightPercent(14);
-        Menu.WidthPercent(30); */
         // keep button sizes the same for better appearance, but with option to change
         int CogsPngSize=96; // FetchPngSize;
         but_Settings.Width(CogsPngSize);
