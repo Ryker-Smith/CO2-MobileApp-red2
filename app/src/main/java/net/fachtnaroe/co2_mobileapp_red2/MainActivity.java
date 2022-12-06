@@ -17,19 +17,16 @@ import com.google.appinventor.components.runtime.Clock;
 //
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class MainActivity extends Form implements HandlesEventDispatching {
     private
     Button Menu, Fetch;
     HorizontalArrangement Main;
     HorizontalArrangement HBlock;
-    VerticalArrangement VBlock;
-    VerticalArrangement VBlock1;
-    VerticalArrangement VBlock2;
+    VerticalArrangement VBlock, VBlock1, VBlock2;
     Label Labl;
-    Label TextCo2;
-    Label TextTemp;
+    Label label_CO2_data;
+    Label label_Temperature_data;
     Web SpiderWebCo2, SpiderWebTemp;
     TextBox servernameBox1, servernameBox2;
     WebViewer SpiderSea;
@@ -75,11 +72,14 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         HBlock.HeightPercent(20);
         //
         HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(3);
+        HBlock.HeightPercent(4);
         HBlock.WidthPercent(30);
         HBlock.Image("ForTexts.png");
+        Label padding1 = new Label(HBlock);
+        padding1.HeightPercent(3);
+        padding1.WidthPercent(2);
         Labl = new Label(HBlock);
-        Labl.Text("        CO2 Levels");
+        Labl.Text("CO2 Level");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         //
         HBlock = new HorizontalArrangement(VBlock1);
@@ -89,24 +89,27 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         VBlock.HeightPercent(16);
         VBlock.WidthPercent(45);
         VBlock.Image("ForTexts.png");
-        TextCo2 = new Label(VBlock);
-        TextCo2.WidthPercent(39);
-        TextCo2.HeightPercent(12);
-        TextCo2.Text("Press the plane to request data!");
-        TextCo2.TextAlignment(ALIGNMENT_CENTER);
-        TextCo2.FontSize(27);
-        TextCo2.TextColor(COLOR_GREEN);
-        TextCo2.HTMLFormat(true);
+        label_CO2_data = new Label(VBlock);
+        label_CO2_data.WidthPercent(39);
+        label_CO2_data.HeightPercent(12);
+        label_CO2_data.Text("Press the plane to request data!");
+        label_CO2_data.TextAlignment(ALIGNMENT_CENTER);
+        label_CO2_data.FontSize(27);
+        label_CO2_data.TextColor(COLOR_GREEN);
+        label_CO2_data.HTMLFormat(true);
         //
         HBlock = new HorizontalArrangement(VBlock1);
         HBlock.HeightPercent(2);
         //
         HBlock = new HorizontalArrangement(VBlock1);
-        HBlock.HeightPercent(3);
+        HBlock.HeightPercent(4);
         HBlock.WidthPercent(30);
         HBlock.Image("ForTexts.png");
+        Label padding2 = new Label(HBlock);
+        padding2.HeightPercent(3);
+        padding2.WidthPercent(2);
         Labl = new Label(HBlock);
-        Labl.Text("      Temperature");
+        Labl.Text("Temperature");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         //
         HBlock = new HorizontalArrangement(VBlock1);
@@ -116,13 +119,13 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         HBlock.HeightPercent(16);
         HBlock.WidthPercent(45);
         HBlock.Image("ForTexts.png");
-        TextTemp = new Label(HBlock);
-        TextTemp.WidthPercent(39);
-        TextTemp.HeightPercent(12);
-        TextTemp.Text("Press the plane to request data!");
-        TextTemp.TextAlignment(ALIGNMENT_CENTER);
-        TextTemp.FontSize(27);
-        TextTemp.TextColor(COLOR_GREEN);
+        label_Temperature_data = new Label(HBlock);
+        label_Temperature_data.WidthPercent(39);
+        label_Temperature_data.HeightPercent(12);
+        label_Temperature_data.Text("Press the plane to request data!");
+        label_Temperature_data.TextAlignment(ALIGNMENT_CENTER);
+        label_Temperature_data.FontSize(27);
+        label_Temperature_data.TextColor(COLOR_GREEN);
         //
         HBlock = new HorizontalArrangement(VBlock1);
         HBlock.HeightPercent(5);
@@ -150,9 +153,10 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         HBlock.HeightPercent(4);
         HBlock.WidthPercent(38);
         HBlock.Image("ForTexts.png");
-        Labl = new Label(HBlock);
-        //Labl.HeightPercent(8);
-        Labl.Text("             PPM");
+        /*Label padding3 = new Label(HBlock);
+        padding3.HeightPercent(3);
+        padding3.WidthPercent(3); */
+        Labl.Text("PPM");
         Labl.TextAlignment(ALIGNMENT_CENTER);
         Labl.FontSize(18);
         //
@@ -206,20 +210,20 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             dbg("Ive been pressed!");
             if (component.equals(Fetch)) {
                 Tim.TimerInterval(6000);
-                TextCo2.TextColor(COLOR_ORANGE);
-                TextCo2.FontBold(true);
-                TextTemp.TextColor(COLOR_ORANGE);
-                TextTemp.FontBold(true);
+                label_CO2_data.TextColor(COLOR_ORANGE);
+                label_CO2_data.FontBold(true);
+                label_Temperature_data.TextColor(COLOR_ORANGE);
+                label_Temperature_data.FontBold(true);
                 SpiderWebCo2.Url(servernameBox1.Text());
                 SpiderWebTemp.Url(servernameBox2.Text());
-                TextCo2.Text(SpiderWebCo2.Url());
-                TextCo2.Text("Connecting..");
-                TextCo2.TextColor(COLOR_GREEN);
-                TextCo2.FontBold(false);
-                TextTemp.Text(SpiderWebTemp.Url());
-                TextTemp.Text("Connecting..");
-                TextTemp.TextColor(COLOR_GREEN);
-                TextTemp.FontBold(false);
+                label_CO2_data.Text(SpiderWebCo2.Url());
+                label_CO2_data.Text("Connecting..");
+                label_CO2_data.TextColor(COLOR_GREEN);
+                label_CO2_data.FontBold(false);
+                label_Temperature_data.Text(SpiderWebTemp.Url());
+                label_Temperature_data.Text("Connecting..");
+                label_Temperature_data.TextColor(COLOR_GREEN);
+                label_Temperature_data.FontBold(false);
                 dbg("Sending request");
                 System.err.print("You pressed the button");
                 SpiderWebCo2.Get();
@@ -232,8 +236,8 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             dbg("GotText");
             if (component.equals(SpiderWebCo2)) {
 //                dbg("My web component");
-                TextCo2.Text("Formatting\n");
-                TextCo2.FontSize(50);
+                label_CO2_data.Text("Formatting\n");
+                label_CO2_data.FontSize(50);
                 String status = params[1].toString();
                 String textOfResponse = (String) params[3];
 //                dbg("Calling function to process response");
@@ -243,8 +247,8 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             }
             else if (component.equals(SpiderWebTemp)) {
 //                dbg("My web component");
-                TextTemp.Text("Formatting\n");
-                TextTemp.FontSize(50);
+                label_Temperature_data.Text("Formatting\n");
+                label_Temperature_data.FontSize(50);
                 String status = params[1].toString();
                 String textOfResponse = (String) params[3];
 //                dbg("Calling function to process response");
@@ -273,11 +277,11 @@ public class MainActivity extends Form implements HandlesEventDispatching {
             JSONObject parser = new JSONObject(textOfResponse);
             if (parser.getString("Status").equals("OK")) {
                 if (c.equals(SpiderWebCo2)) {
-                    TextCo2.Text(parser.getString("value"));
+                    label_CO2_data.Text(parser.getString("value"));
                     Tim.TimerEnabled(true);
                 }
                 else if (c.equals(SpiderWebTemp)) {
-                    TextTemp.Text(parser.getString("value"));
+                    label_Temperature_data.Text(parser.getString("value"));
                 }
             }
         }
