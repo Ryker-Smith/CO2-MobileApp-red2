@@ -1,7 +1,5 @@
 package net.fachtnaroe.co2_mobileapp_red2;
 
-import static java.lang.Thread.sleep;
-
 import com.google.appinventor.components.runtime.Button;
 import com.google.appinventor.components.runtime.Component;
 import com.google.appinventor.components.runtime.EventDispatcher;
@@ -12,7 +10,6 @@ import com.google.appinventor.components.runtime.TextBox;
 import com.google.appinventor.components.runtime.VerticalArrangement;
 import com.google.appinventor.components.runtime.Label;
 import com.google.appinventor.components.runtime.Web;
-import com.google.appinventor.components.runtime.WebViewer;
 import com.google.appinventor.components.runtime.Clock;
 //
 import org.json.JSONException;
@@ -31,7 +28,6 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     Label label_Temperature_data;
     Web SpiderWebCo2, SpiderWebTemp;
     TextBox servernameBox1, servernameBox2;
-    WebViewer SpiderSea;
     Clock Tim;
     int pad_MarginLeft_Width=10;
     int leftHeadingPaddingValue=2;
@@ -55,13 +51,13 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         // hidden (debug) components
         servernameBox1 = new TextBox(Main);
         servernameBox1.FontSize(12);
-        servernameBox1.Text("https://fachtnaroe.net/qndco2?device=KRIS-CO2-62-42&sensor=CO2");
+        servernameBox1.Text("https://fachtnaroe.net/qndco2?device=AirTechC02-Monitor-62-42&sensor=CO2");
         servernameBox1.Enabled(true);
         servernameBox1.FontTypeface(Component.TYPEFACE_MONOSPACE);
         servernameBox1.Visible(false);
         servernameBox2 = new TextBox(Main);
         servernameBox2.FontSize(12);
-        servernameBox2.Text("https://fachtnaroe.net/qndco2?device=KRIS-CO2-62-42&sensor=CELCIUS");
+        servernameBox2.Text("https://fachtnaroe.net/qndco2?device=AirTechC02-Monitor-62-42&sensor=CELCIUS");
         servernameBox2.Enabled(true);
         servernameBox2.FontTypeface(Component.TYPEFACE_MONOSPACE);
         servernameBox2.Visible(false);
